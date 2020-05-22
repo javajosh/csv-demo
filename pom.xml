@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>2.0.9</dropwizard.version>
-        <mainClass>com.javajosh.csv-demo.CSVDemoApplication</mainClass>
+        <mainClass>com.javajosh.csvdemo.CSVDemoApplication</mainClass>
     </properties>
 
     <dependencyManagement>
@@ -98,6 +98,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>${mainClass}</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                     </archive>
                 </configuration>
