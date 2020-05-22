@@ -4,7 +4,7 @@ Josh Rehman, Jacksonville FL, 5/22/2020
 
 ## Problem statement
 
-"For the files in CSV format, write a program that will read the content of the file and separate enrollees by insurance company in its own file. Additionally, sort the contents of each file by last and first name (ascending).  Lastly, if there are duplicate User Ids for the same Insurance Company, then only the record with the highest version should be included. The following data points are included in the file:
+> For the files in CSV format, write a program that will read the content of the file and separate enrollees by insurance company in its own file. Additionally, sort the contents of each file by last and first name (ascending).  Lastly, if there are duplicate User Ids for the same Insurance Company, then only the record with the highest version should be included. The following data points are included in the file:
 
   - User Id (string)
   - First and Last Name (string)
@@ -13,7 +13,7 @@ Josh Rehman, Jacksonville FL, 5/22/2020
 
 ## Implementation notes
 
-Java is an okay pick for this kind of problem, even though it is quite awkward with file handling. Python is prbably best (or Groovy if you really want to run on the JVM). But Java has been around forever and it has good CSV libraries. For the purpose of a demo I'm going to write a one-shot command line program using relatively low-level Java, based on Dropwizard to minimize my project setup pain. It's also an opportunity to try a new library (to me), 
+Java is an *okay* pick for this kind of problem, even though it is quite awkward with file handling. Python is prbably best (or Groovy if you really want to run on the JVM). But Java has been around forever and it has good CSV libraries. For the purpose of a demo I'm going to write a one-shot command line program using relatively low-level Java, based on Dropwizard to minimize my project setup pain. It's also an opportunity to try a new library (to me), 
 
 I am going to make some assumptions about the problem:
 
@@ -23,17 +23,27 @@ I am going to make some assumptions about the problem:
 
 
 
-## How to start the JavaJosh CSV Demo application
+## How to start the JavaJosh CSV Demo
 ---
 
-1. Run `mvn clean install` to build your application
-1. Start application with `java -jar target/csv-demo-1.0-SNAPSHOT.jar server config.yml`
-1. To check that your application is running enter url `http://localhost:8080`
+You need git, Java, and maven. Here's what I have installed:
+```
+➜  bin mvn --version
+Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
+Maven home: /usr/local/Cellar/maven/3.6.3_1/libexec
+Java version: 13.0.2, vendor: N/A, runtime: /usr/local/Cellar/openjdk/13.0.2+8_2/libexec/openjdk.jdk/Contents/Home
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "10.13.6", arch: "x86_64", family: "mac"
 
-Health Check
----
+➜  bin git --version
+git version 2.20.1
+```
 
-To see your applications health enter url `http://localhost:8081/healthcheck`
+1. Checkout the code from github `git checkout git@github.com:javajosh/cvs-demo.git` and `cd` into the directory.
+1. Run `mvn clean install` to build the demo
+1. Start demo with `java -jar target/csv-demo-1.0-SNAPSHOT.jar server config.yml`
+
+
 
 ----------------------------------------------------------------------------------------------------------------
 
