@@ -1,0 +1,8 @@
+userId, lastName, firstName, version,  company
+a321, smith, john	, 1, acme
+a321, smith, john	, 2, acme
+a321, smith, john	, 3, acme
+b131, jones, alice, 1, aetna
+b131, jones, alice, 2, aetna
+b131, jones, alice, 3, aetna
+e131, mannn, hugh , 1, acme

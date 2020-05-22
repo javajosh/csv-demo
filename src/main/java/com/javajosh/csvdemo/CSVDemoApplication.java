@@ -1,5 +1,6 @@
 package com.javajosh.csvdemo;
 
+import com.javajosh.csvdemo.cli.ProcessCSV;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -17,13 +18,13 @@ public class CSVDemoApplication extends Application<CSVDemoConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<CSVDemoConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addCommand(new ProcessCSV());
     }
 
     @Override
     public void run(final CSVDemoConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+        // We're not starting a server, so no need to implement this.
     }
 
 }
