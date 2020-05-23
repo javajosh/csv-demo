@@ -1,5 +1,6 @@
 package com.javajosh.csvdemo.cli;
 
+import com.google.common.base.Joiner;
 import de.siegmar.fastcsv.reader.CsvContainer;
 import de.siegmar.fastcsv.reader.CsvReader;
 import de.siegmar.fastcsv.reader.CsvRow;
@@ -59,13 +60,17 @@ public class ProcessCSV extends Command {
             int version = Integer.parseInt(row.getField(3).trim());
             String company = row.getField(4).trim();
 
+            // Make a company partition if it's not there
             partition = outputFiles.get(company);
             if (partition == null){
                 partition = new HashMap();
-                partition.put(company, row);
+                outputFiles.put(company, partition);
+                partition.put(id, row);
                 continue;
             }
 
+            // If the partition already has this id, then only replace
+            // it if the source version is greater
             foundRow = partition.get(id);
             if (foundRow == null){
                 partition.put(id, row);
@@ -76,31 +81,19 @@ public class ProcessCSV extends Command {
                 }
             }
         }
-        System.out.println(outputFiles);
+        // Do a sanity check to see if the data looks right
+        Joiner.MapJoiner mapJoiner = Joiner.on(",").withKeyValueSeparator("=");
+        System.out.println(mapJoiner.join(outputFiles));
 
-        //sort by name then version
-//        List<CsvRow> allRows = csv.getRows();
-//        allRows.sort((r1, r2) -> {
-//            String name1 = r1.getField(1) + r1.getField(2);
-//            String name2 = r2.getField(1) + r2.getField(2);
-//            int v1 = Integer.parseInt(r1.getField(3));
-//            int v2 = Integer.parseInt(r2.getField(3));
-//            int nameComparison = name1.compareTo(name2);
-//            return nameComparison == 0 ? v1 - v2 : nameComparison;
-//        });
-//
-//        // prune
-//        int lastId = Integer.MIN_VALUE;
-//        for (CsvRow row : csv.getRows()) {
-//            System.out.println("First column of line: " + row.getField(0));
+        // Okay, I'm a little stumped as to why the row type is not
+        // being correctly inferred here.
+//        for(Map<String, CsvRow> p : outputFiles.values()){
+//            Collections.sort(p.values(), (r1, r2) -> {
+//                String name1 = r1.getField(1) + r1.getField(2);
+//                String name2 = r2.getField(1) + r2.getField(2);
+//            });
 //        }
 
-
-
-        for (CsvRow row : csv.getRows()) {
-
-            /// System.out.println("First column of line: " + row.getField(0));
-        }
 
         // Write it out
         File outputFile = new File(outputDir + "/foo.csv");
