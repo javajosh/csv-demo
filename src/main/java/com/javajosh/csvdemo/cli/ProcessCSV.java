@@ -46,7 +46,7 @@ public class ProcessCSV extends Command {
     public void run(Bootstrap<?> bootstrap, Namespace namespace) throws Exception {
         String inputFileName = namespace.getString("file");
         String outputDir = namespace.getString("out");
-        log.warn("Using input file {} and output directory {}", inputFileName, outputDir);
+        log.info("Using input file {} and output directory {}", inputFileName, outputDir);
 
         // Read it in
         File inputFile = new File(inputFileName);
@@ -103,7 +103,7 @@ public class ProcessCSV extends Command {
 
             // Write it out
             String outputFilename = MessageFormatter.format("{}/{}.csv", outputDir, company).getMessage();
-            log.warn("Writing file {}", outputFilename);
+            log.info("Writing file {}", outputFilename);
             File outputFile = new File(outputFilename);
             csvWriter.write(outputFile, StandardCharsets.UTF_8, myFinalList);
         }

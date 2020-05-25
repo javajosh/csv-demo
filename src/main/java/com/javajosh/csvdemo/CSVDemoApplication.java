@@ -1,5 +1,6 @@
 package com.javajosh.csvdemo;
 
+import ch.qos.logback.classic.Level;
 import com.javajosh.csvdemo.cli.ProcessCSV;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -19,6 +20,11 @@ public class CSVDemoApplication extends Application<CSVDemoConfiguration> {
     @Override
     public void initialize(final Bootstrap<CSVDemoConfiguration> bootstrap) {
         bootstrap.addCommand(new ProcessCSV());
+    }
+
+    @Override
+    protected Level bootstrapLogLevel() {
+        return Level.INFO;
     }
 
     @Override
