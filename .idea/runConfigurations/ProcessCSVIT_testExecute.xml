@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ProcessCSVIT.testExecute" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="csv-demo" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.javajosh.csvdemo.cli.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PACKAGE_NAME" value="com.javajosh.csvdemo.cli" />
+    <option name="MAIN_CLASS_NAME" value="com.javajosh.csvdemo.cli.ProcessCSVIT" />
+    <option name="METHOD_NAME" value="testExecute" />
+    <option name="TEST_OBJECT" value="method" />
+    <option name="VM_PARAMETERS" value="-ea" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="file://%MODULE_WORKING_DIR%" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="singleModule" />
+    </option>
+    <patterns />
+    <method />
+  </configuration>
+</component>
