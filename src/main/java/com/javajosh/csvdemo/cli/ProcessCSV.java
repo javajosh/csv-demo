@@ -8,6 +8,8 @@ import io.dropwizard.cli.Command;
 import io.dropwizard.setup.Bootstrap;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.File;
@@ -16,6 +18,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProcessCSV extends Command {
+    private final Logger log = LoggerFactory.getLogger(ProcessCSV.class);
+
     public ProcessCSV() {
         super("process", "Process a csv file");
     }
@@ -42,7 +46,7 @@ public class ProcessCSV extends Command {
     public void run(Bootstrap<?> bootstrap, Namespace namespace) throws Exception {
         String inputFileName = namespace.getString("file");
         String outputDir = namespace.getString("out");
-        System.out.println("file: " + inputFileName + " out dir: " + outputDir);
+        log.warn("Using input file {} and output directory {}", inputFileName, outputDir);
 
         // Read it in
         File inputFile = new File(inputFileName);
@@ -98,7 +102,9 @@ public class ProcessCSV extends Command {
                     }).collect(Collectors.toList());
 
             // Write it out
-            File outputFile = new File(MessageFormatter.format("{}/{}.csv", outputDir, company).getMessage());
+            String outputFilename = MessageFormatter.format("{}/{}.csv", outputDir, company).getMessage();
+            log.warn("Writing file {}", outputFilename);
+            File outputFile = new File(outputFilename);
             csvWriter.write(outputFile, StandardCharsets.UTF_8, myFinalList);
         }
     }
