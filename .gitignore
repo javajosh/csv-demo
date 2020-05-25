@@ -1,6 +1,7 @@
 # Ignore some IntelliJ stuff
 **/.idea/workspace.xml 
 **/.idea/tasks.xml
+**/.idea/datasources*
 
 # Ignore Maven stuff
 target/

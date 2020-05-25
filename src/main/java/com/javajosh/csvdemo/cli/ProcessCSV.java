@@ -1,6 +1,5 @@
 package com.javajosh.csvdemo.cli;
 
-import com.google.common.base.Joiner;
 import de.siegmar.fastcsv.reader.CsvContainer;
 import de.siegmar.fastcsv.reader.CsvReader;
 import de.siegmar.fastcsv.reader.CsvRow;
@@ -9,10 +8,12 @@ import io.dropwizard.cli.Command;
 import io.dropwizard.setup.Bootstrap;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
+import org.slf4j.helpers.MessageFormatter;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProcessCSV extends Command {
     public ProcessCSV() {
@@ -34,7 +35,8 @@ public class ProcessCSV extends Command {
                 .help("The directory into which we write the output files.");
     }
 
-    enum FIELDS {userId, lastName, firstName, version, company};
+    // The expected order of fields in the input.
+    enum FIELDS {userId, lastName, firstName, version, company}
 
     @Override
     public void run(Bootstrap<?> bootstrap, Namespace namespace) throws Exception {
@@ -49,61 +51,55 @@ public class ProcessCSV extends Command {
         CsvContainer csv = csvReader.read(inputFile, StandardCharsets.UTF_8);
 
         // provider to unique ids.
-        // Ugh this is ugly. TODO: use guava's multimap instead
-        Map<String, Map<String, CsvRow>> outputFiles = new HashMap();
+        Map<String, Map<String, CsvRow>> outputFiles = new HashMap<>();
         Map<String, CsvRow> partition;
         CsvRow foundRow;
         for (CsvRow row : csv.getRows()) {
-            String id = row.getField(0).trim();
-//          String lastName = row.getField(1).trim();
-//          String firstName = row.getField(2).trim();
-            int version = Integer.parseInt(row.getField(3).trim());
-            String company = row.getField(4).trim();
+            String id =      row.getField(FIELDS.userId.ordinal()).trim();
+            String version = row.getField(FIELDS.version.ordinal()).trim();
+            String company = row.getField(FIELDS.company.ordinal()).trim();
 
-            // Make a company partition if it's not there
+            // Make a new company partition if it's not there
             partition = outputFiles.get(company);
-            if (partition == null){
-                partition = new HashMap();
+            if (partition == null) {
+                partition = new HashMap<>();
                 outputFiles.put(company, partition);
                 partition.put(id, row);
                 continue;
             }
 
-            // If the partition already has this id, then only replace
-            // it if the source version is greater
+            // The company partition already exists, so if the id already exists, only write if the new id is larger
             foundRow = partition.get(id);
-            if (foundRow == null){
+            if (foundRow == null) {
                 partition.put(id, row);
             } else {
-                int foundVersion = Integer.parseInt(foundRow.getField(3).trim());
-                if (version > foundVersion){
+                int foundVersion = Integer.parseInt(foundRow.getField(FIELDS.version.ordinal()).trim());
+                int thisVersion = Integer.parseInt(version.trim());
+                if (thisVersion > foundVersion) {
                     partition.put(id, row);
                 }
             }
         }
-        // Do a sanity check to see if the data looks right
-        Joiner.MapJoiner mapJoiner = Joiner.on(",").withKeyValueSeparator("=");
-        System.out.println(mapJoiner.join(outputFiles));
 
-        // Okay, I'm a little stumped as to why the row type is not
-        // being correctly inferred here.
-//        for(Map<String, CsvRow> p : outputFiles.values()){
-//            Collections.sort(p.values(), (r1, r2) -> {
-//                String name1 = r1.getField(1) + r1.getField(2);
-//                String name2 = r2.getField(1) + r2.getField(2);
-//            });
-//        }
+//        Do a sanity check to see if the data looks right
+//        Joiner.MapJoiner mapJoiner = Joiner.on(",").withKeyValueSeparator("=");
+//        System.out.println(mapJoiner.join(outputFiles));
 
 
-        // Write it out
-        File outputFile = new File(outputDir + "/foo.csv");
         CsvWriter csvWriter = new CsvWriter();
-        Collection<String[]> data = new ArrayList<>();
-        data.add(new String[] { "header1", "header2" });
-        data.add(new String[] { "value1", "value2" });
-        csvWriter.write(outputFile, StandardCharsets.UTF_8, data);
+        // For each partition, convert the Map<String, CsvRow> into a List<String[]>, sort the list, and write it output
+        for (String company : outputFiles.keySet()) {
+            List<String[]> myFinalList = outputFiles.get(company).values().stream()
+                    .map(row -> row.getFields().toArray(new String[0]))
+                    .sorted((r1, r2) -> {
+                        String name1 = r1[1] + r1[2];
+                        String name2 = r2[1] + r2[2];
+                        return name1.compareTo(name2);
+                    }).collect(Collectors.toList());
+
+            // Write it out
+            File outputFile = new File(MessageFormatter.format("{}/{}.csv", outputDir, company).getMessage());
+            csvWriter.write(outputFile, StandardCharsets.UTF_8, myFinalList);
+        }
     }
-
-
-
 }

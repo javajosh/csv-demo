@@ -5,6 +5,8 @@
     <option name="PROGRAM_PARAMETERS" value="process -f example.csv -o target" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH" />
-    <method />
+    <method>
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean package" />
+    </method>
   </configuration>
 </component>
