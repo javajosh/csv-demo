@@ -17,7 +17,9 @@ COPY raw_csv_input FROM '/Users/josh/proj/csv-demo/example.csv' with CSV HEADER;
 
 ------------------------------------------------
 -- Filter out lower versions with a self-join
-SELECT a.* FROM raw_csv_input a LEFT OUTER JOIN raw_csv_input b ON a.userid = b.userid AND a.version < b.version WHERE b.userid IS NULL;
+SELECT a.* FROM raw_csv_input a
+  LEFT OUTER JOIN raw_csv_input b ON a.userid = b.userid AND a.version < b.version
+  WHERE b.userid IS NULL;
 
 
 CREATE OR REPLACE FUNCTION process_csv() RETURNS integer AS $$
@@ -25,10 +27,10 @@ DECLARE
   company RECORD;
 BEGIN
   RAISE NOTICE 'Processing CSV input...';
-  COPY raw_csv_input FROM '/Users/josh/proj/csv-demo/example.csv' with CSV HEADER;
+  COPY raw_csv_input FROM '/Users/josh/proj/csv-demo/example.csv' WITH CSV HEADER;
 
   FOR company IN
-    SELECT DISTINCT company from raw_csv_input
+    SELECT DISTINCT company FROM raw_csv_input
   LOOP
     RAISE NOTICE 'Writing company file %.csv...', quote_ident(company);
     EXECUTE format('COPY ' ||
@@ -42,4 +44,5 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-select from process_csv()
+-- Invoke the function
+SELECT FROM process_csv()
