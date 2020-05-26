@@ -1,2 +1,10 @@
+os: linux
+dist: xenial
 language: java
-script: mvn verify
+# Run the integration test with 'verify'
+script: mvn clean verify
+# Speed up the build by caching maven dependencies.
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2
