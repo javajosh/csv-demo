@@ -43,17 +43,15 @@ git version 2.20.1
 
 1. Checkout the code from github `git checkout git@github.com:javajosh/cvs-demo.git`
 1. `cd` into the project directory (probably `cvs-demo/`)
-1. Run `mvn clean package` to build the demo
-1. Start demo with `java -jar target/csv-demo-1.0-SNAPSHOT.jar process -f example.csv -o target`
+1. Run `mvn clean package` to build, `mvn clean verify` to run tests
+1. Start demo with `java -jar target/csv-demo-1.0-SNAPSHOT.jar process -f src/test/resources/fixtures/example.csv -o target`
 1. Check the output in `/target/*.csv`
 1. Check the logging output (to standard out).
-1. Clean up with `mvn clean`
-
-
+1. (Optional) Clean up with `mvn clean`
 
 ----------------------------------------------------------------------------------------------------------------
 
-Enrollees example:
+##Data sketches for this problem:
 
 ### Input:
 
