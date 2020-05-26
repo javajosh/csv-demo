@@ -1,5 +1,7 @@
 # CSV Demo
 
+[![Build Status](https://travis-ci.com/travis-ci/travis-web.svg?branch=master)](https://travis-ci.com/travis-ci/travis-web)
+
 Josh Rehman, Jacksonville FL, 5/22/2020
 
 ## Problem statement
