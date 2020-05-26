@@ -7,7 +7,7 @@ import java.io.File;
 // IT stands for integration test
 public class ProcessCSVIT extends TestCase {
     public void testExecute() throws Exception {
-        String inputFile = "test/resources/fixtures/example.csv";
+        String inputFile = "src/test/resources/fixtures/example.csv";
         String outputDir = "target";
 
         execute(new String[]{"-f", inputFile, "-o", outputDir});
@@ -20,11 +20,12 @@ public class ProcessCSVIT extends TestCase {
             throws Exception {
         File jar = new File("target/csv-demo-1.0-SNAPSHOT.jar");
 
-        String[] execArgs = new String[args.length + 3];
-        System.arraycopy(args, 0, execArgs, 3, args.length);
+        String[] execArgs = new String[args.length + 4];
+        System.arraycopy(args, 0, execArgs, 4, args.length);
         execArgs[0] = "java";
         execArgs[1] = "-jar";
         execArgs[2] = jar.getCanonicalPath();
+        execArgs[3] = "process";
         Process p = Runtime.getRuntime().exec(execArgs);
         p.waitFor();
 
